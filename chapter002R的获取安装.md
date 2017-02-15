@@ -34,9 +34,9 @@ Step 3：选择镜像后就会跳出安装页面，此时即可根据自己电�
 
 并不是，二进制是一种编译好的版本，不满足于基本配置并熟悉如何源代码安装的大神们也可以采用“源代码”安装方式，当然这需要其他的编译器。
 
-## 2、R的最佳伴侣（免费的集成开发工具IDE）：RStudio介绍
+## 2、最佳伴侣RStudio介绍
 
-为了让R语言编程开发界面和操作更友好，我们需要安装其集成开发工具(integrated development environment, IDE) 。在免费的IDE软件中，有三个值得推荐：RStudio、 Revolution R Enterprise和IRkernel+Jupter notebook。先说一下Revolution R企业版是微软并购得到的R语言开发平台，对大数据处理和分析功能强大。IRkernel是Jupter notebook平台中调用的R语言内核。而Jupter notebook可能是python语言开发的最受欢迎的IDE软件。因为在python中有大量机器学习、深度学习的功能包，它也是目前大数据分析中很热门的语言。在Jupter notebook中通过调用IRkernel来执行R语言程序，这样就可以进行功能更为强大的混合编程。然后，隆重推出我重点推荐：全新的颜值担当—RStudio！更多关于R语言的工具、在各行各业应用的软件包的推荐清单请参考：https://github.com/qinwf/awesome-R。
+为了让R语言编程开发界面和操作更友好，我们需要安装其**集成开发工具(integrated development environment, IDE)** 。在免费的IDE软件中，有三个值得推荐：RStudio、 Revolution R Enterprise和IRkernel+Jupter notebook。先说一下Revolution R企业版是微软并购得到的R语言开发平台，对大数据处理和分析功能强大。IRkernel是Jupter notebook平台中调用的R语言内核。而Jupter notebook可能是python语言开发的最受欢迎的IDE软件。因为在python中有大量机器学习、深度学习的功能包，它也是目前大数据分析中很热门的语言。在Jupter notebook中通过调用IRkernel来执行R语言程序，这样就可以进行功能更为强大的混合编程。然后，隆重推出我重点推荐：全新的颜值担当—RStudio！更多关于R语言的工具、在各行各业应用的软件包的推荐清单请参考：https://github.com/qinwf/awesome-R。
 
 小贴士：所谓集成开发环境IDE，就是把你做开发工作所需要的代码编辑器呀、编译器呀、调试器等工具都集成在一个环境下，方便同时开工，有助于提高程序开发的效率。
 
