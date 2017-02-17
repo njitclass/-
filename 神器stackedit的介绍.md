@@ -8,6 +8,8 @@
 - 将文件发布到github中首先要有注册github的账号并允许stackedit获得github账户的授权。
 - 当要更新github上文件的内容时点右上角<i class="icon-upload"></i> 按钮。
 - 当要修改github上文件名就比较麻烦。要先在github上进入该文件编辑状态，再删除并在页面底部确认。然后在左上角“#”按钮下publish-manage publication-remove location，再次重新发布。
+- 唯一不足是画表格比较麻烦。建议安装CuteMarkEd编辑器里面有插入表格功能。可以插入后将代码拷贝到StackEdit中来。
+
 
 Welcome to StackEdit!
 ===================
