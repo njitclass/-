@@ -6,7 +6,8 @@
 -  右上角文件名框内输入文件名时带上.md文件扩展名。因为发布到网上时，可以直接将文件名框中的文件名复制粘贴到publish下的filepath框中。
 - 右下角有全屏显示、markdown语法说明、字数统计和显示文档目录的功能。最赞的功能是显示文档目录，因为可以点击目录中标题直接跳转到对应的正文位置。
 - 将文件发布到github中首先要有注册github的账号并允许stackedit获得github账户的授权。
-- 当要更新github上文件的内容时点右上角update按钮
+- 当要更新github上文件的内容时点右上角<i class="icon-upload"></i> 按钮。
+- 当要修改github上文件名就比较麻烦。要先在github上进入该文件编辑状态，再删除并在页面底部确认。然后在左上角“#”按钮下publish-manage publication-remove location，再次重新发布。
 
 Welcome to StackEdit!
 ===================
