@@ -29,7 +29,8 @@ Welcome to StackEdit!
 ===================
 
 
-Hey! I'm your first Markdown document in **StackEdit**[^stackedit]. Don't delete me, I'm very helpful! I can be recovered anyway in the **Utils** tab of the <i class="icon-cog"></i> **Settings** dialog.
+你好! 我是你在**StackEdit**[^stackedit] 中的第一个Markdown文档。 不要删除我，我会帮助你熟悉stackedit!如果不小心误删了我，可以在左上角#按钮中的<i class="icon-cog"></i> **Settings**对话框中的**Utils**标签页中找到我。斜体和粗体的快捷键在这里依然管用：`ctrl+i`和`ctrl+b`。
+
 
 ----------
 
@@ -147,9 +148,9 @@ StackEdit supports **Markdown Extra**, which extends **Markdown** syntax with so
 > **Note:** You can find more information about **Markdown** syntax [here][2] and **Markdown Extra** extension [here][3].
 
 
-### Tables
+### 创建表格
 
-**Markdown Extra** has a special syntax for tables:
+**Markdown Extra** 有创建表格的特殊语法:
 
 Item     | Value
 -------- | ---
@@ -166,9 +167,9 @@ You can specify column alignment with one or two colons:
 | Pipe     | $1    |  234  |
 
 
-### Definition Lists
+### 定义列表
 
-**Markdown Extra** has a special syntax for definition lists too:
+**Markdown Extra** 也有定义列表的特殊语法:
 
 Term 1
 Term 2
@@ -184,7 +185,7 @@ Term 3
 	> part of definition D
 
 
-### Fenced code blocks
+### 带框的代码块
 
 GitHub's fenced code blocks are also supported with **Highlight.js** syntax highlighting:
 
@@ -201,7 +202,7 @@ var bar = 0;
 > - about **Highlight.js** syntax highlighting [here][6].
 
 
-### Footnotes
+### 脚注
 
 You can create footnotes like this[^footnote].
 
@@ -219,7 +220,7 @@ SmartyPants converts ASCII punctuation characters into "smart" typographic punct
 | Dashes           | `-- is en-dash, --- is em-dash` | -- is en-dash, --- is em-dash |
 
 
-### Table of contents
+### 目录
 
 You can insert a table of contents using the marker `[TOC]`:
 
