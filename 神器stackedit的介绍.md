@@ -2,12 +2,12 @@
 .md文件是markdown文件格式的文件。这种格式文本文件是一种只有极少的标记符的文本文件。
 这些精心选择的标记符，可以将文本的层次和链接关系表达出来，也能将程序代码分块突出显示。
 因为这些特点，在编程界和一般网络交流颇受欢迎。md文件需要markdown阅读器或编辑器才能正确浏览。
-这里介绍一个神器：StackEditor。
+这里介绍一个神器：StackEdit。
 
 一个神奇的网页只要首次登陆后，再次访问就可以离线阅读和编辑Markdown文件。
 几个重要功能：
 
-- 可以将网络中的md文件导入到StackEditor中浏览；
+- 可以将网络中的md文件导入到StackEdit中浏览；
 - 离线编辑Markdown文件，分屏实时反映输出结果；
 - 可以将markdown文件导出到电脑其他文件夹；
 - 可以直接文件发布到一些博客和github上；
@@ -24,6 +24,7 @@
 - 当要修改github上文件名就比较麻烦。要先在github上进入该文件编辑状态，再删除并在页面底部确认。然后在左上角“#”按钮下publish-manage publication-remove location，再次重新发布。
 - 唯一不足是画表格比较麻烦。建议安装CuteMarkEd编辑器里面有插入表格功能。可以插入后将代码拷贝到StackEdit中来。
 
+下面是stackedit的官方入门帮助文档：
 
 Welcome to StackEdit!
 ===================
@@ -138,7 +139,7 @@ Since one document can be published on multiple locations, you can list and mana
 ----------
 
 
-Markdown Extra
+Markdown 语法扩展
 --------------------
 
 StackEdit supports **Markdown Extra**, which extends **Markdown** syntax with some nice features.
@@ -204,9 +205,9 @@ var bar = 0;
 
 ### 脚注
 
-You can create footnotes like this[^footnote].
+创建脚注如:[^footnote].只要方括号内^后字符串相同，两者的对应关系就建立了对应关系，而编号会根据其在正文中的位置自动更新编号的数字。如stackedit[^stackedit]
 
-  [^footnote]: Here is the *text* of the **footnote**.
+  [^footnote]: 这里是脚注的 *文本内容* .
 
 
 ### SmartyPants
@@ -227,7 +228,7 @@ You can insert a table of contents using the marker `[TOC]`:
 [TOC]
 
 
-### MathJax
+### MathJax数学公式编辑
 
 You can render *LaTeX* mathematical expressions using **MathJax**, as on [math.stackexchange.com][1]:
 
@@ -246,7 +247,7 @@ $$
 > **Note:** You can find more information about **LaTeX** mathematical expressions [here][4].
 
 
-### UML diagrams
+### UML图
 
 You can also render sequence diagrams like this:
 
