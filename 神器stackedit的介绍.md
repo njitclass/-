@@ -151,15 +151,15 @@ StackEdit supports **Markdown Extra**, which extends **Markdown** syntax with so
 
 ### 创建表格
 
-**Markdown Extra** 有创建表格的特殊语法:
+**Markdown Extra** 有创建表格的特殊语法:表格的标题行与内容行之间用虚线的横线和竖线隔开；一行中各个栏目之间用竖线隔开。强制换行用`<br/>` 换行标记来实现换行。
 
 Item     | Value
 -------- | ---
-Computer | $1600
+Computer<br/>Computer | $1600
 Phone    | $12
 Pipe     | $1
 
-You can specify column alignment with one or two colons:
+您可以使用一个或两个冒号指定列对齐的方式。冒号在右边就是右对齐，冒号在左边就是左对齐，冒号在两边则居中对齐:
 
 | Item     | Value | Qty   |
 | :------- | ----: | :---: |
