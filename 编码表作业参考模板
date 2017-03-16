@@ -1,0 +1,57 @@
+## **作业要求**
+
+> - 编写该数据集的**数据说明**和**编码表**，文件格式为**.md格式**（markdown文本文件，用stackedit编辑）。
+> - 数据说明部分对一个数据集进行**数据来源**、**数据采集方法**和**采集过程（或采集时间）**等方面的介绍。
+> - 编码表应包括课件中编码表例子的**表格栏目**。
+
+### <i class="icon-pencil"></i> **解**：
+##一、数据说明
+###1. 数据来源
+该数据集来源于Belsley, Kuh和Welsch1980年的研究数据。而他们又是从Sterling那里获得的1977年的研究数据。具体的参考资料如下：
+[1] Sterling, Arnie (1977) Unpublished BS Thesis. Massachusetts Institute of Technology.
+[2] Belsley, D. A., Kuh. E. and Welsch, R. E. (1980) Regression Diagnostics. New York: Wiley.
+###2. 采集方法
+根据Franco Modigliani的生命周期储蓄假说，储蓄率(个人总储蓄除以可支配收入)可以用人均可支配收入、人均可支配收入的变化率以及两个人口变数：15岁以下人口的百分比和75岁以上人口的百分比来解释。也就是说：采用回归模型时，因变量为储蓄率，而自变量为：人均可支配收入、人均可支配收入的变化率、15岁以下人口的百分比和75岁以上人口的百分比。为了消除商业周期或其他短期波动的影响，这些数据是1960年至1970年期间的平均数据。一共采集了50个国家或地区的数据。
+###3. 采集过程（或采集时间）
+1960年至1970年储蓄率的数据。数据集共有50条观测记录，5个变量。
+
+###二、编码表
+###1. 相关操作代码
+```
+# 获取数据集帮助信息
+#法一：在Rstudio-help中输入 LifeCycleSavings
+#法二：使用帮助函数
+help(LifeCycleSavings)
+?LifeCycleSavings     #与第一行等价
+# 查看数据集的内容
+x=LifeCycleSavings;x
+# 数据集的概括信息
+summary(x)
+```
+
+### 2. **编码表**
+变量名|详细说明| 数据<br/>类型 |取值范围 |备注
+-----|------|--------|--------|-----
+**sr**|个人总储蓄| 数值型 |0.600~21.100美元|无
+**pop15**|15岁以下占<br/>人口的百分比|数值型|21.44~47.64%|无 
+**pop75**|75岁以上占<br/>人口的百分比|数值型|0.560~4.700%|无
+**dpi**|人均可支配收入|数值型|88.94~4001.89美元|无
+**ddpi**|人均可支配<br/>收入增长率|数值型|0.220~16.710美元|无
+
+作业完毕。
+
+
+以下是数据操作的例子（不作为作业提交内容，仅供参考）
+```
+require(stats); 
+require(graphics)
+# 画变量之间的散点图矩阵，并在图中添加了平滑拟合曲线
+pairs(LifeCycleSavings, panel = panel.smooth,
+      main = "LifeCycleSavings data")
+# 建立线性回归模型
+fm1 <- lm(sr ~ pop15 + pop75 + dpi + ddpi, data = LifeCycleSavings)
+# 显示线性回归模型的分析结果概要
+summary(fm1)）
+```
+
+> Written with [StackEdit](https://stackedit.io/).
