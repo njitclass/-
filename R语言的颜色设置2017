@@ -127,6 +127,7 @@ plot(iris$Petal.Length, iris$Petal.With,
      main = "iris")
 ```
 参考文献：
+1.R语言中的色彩和调色板
 http://mp.weixin.qq.com/s?__biz=MzA4ODQ1MzQ0Mg==&mid=2648661261&idx=1&sn=f334886fe06c3af4be49a8368907a66a
-常用对照表 http://tool.oschina.net/commons?type=3
+2.常用对照表 http://tool.oschina.net/commons?type=3
 > Written with [StackEdit](https://stackedit.io/).
