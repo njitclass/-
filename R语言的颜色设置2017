@@ -1,4 +1,33 @@
-关于颜色，如果你不想自己创建新的调色板，你只需要记住的函数colors、palette、rainbow和RColorBrewer包就可以了。
+
+# R语言的颜色设置2017
+在这个什么都讲颜值的时代，统计图没有动人的色彩是不能吸引人的。这里就跟大家聊聊R语言的颜色设置和调色板。
+
+## R语言中的颜色参数的自定义方式
+R中可以通过定义col参数自定义颜色。
+
+### 参数的设置有四种常见方法：
+
+-  数字 如1代表当前palette的第1种颜色，2代表当前palette的第2种颜色等。可以用palette()函数查看颜色的顺序。
+- 颜色的英文名，如"red","green","blue","dodgerblue","indianred"等。
+- 使用rgb(red,green,blue,alpha)函数, 得到的返回值是字符向量，向量的元素为十六进制颜色代码。alpha设置不透明度。
+- 使用十六进制颜色代码。以“#”开头的6位或8位16进制（hexadecimal ）数字字符。前6位每2位分别对应红绿蓝。后两位对应不透明度。00完全透明,FF完全不透明。
+
+这几种设置方法是基本等价的。但是只有rgb函数是可以设置不透明度的。我们绘制一个用四种设置方式设置颜色参数的条图：
+```
+barplot(1:4, col = c(7, "yellow", rgb(1, 1, 0), "#FFFF00"))
+```
+记不住颜色的16进制代码？给你一个网址
+http://tool.oschina.net/commons?type=3
+
+### 四种颜色参数设置方式的比较：
+
+- 用数字来设置颜色非常简单，但是可重复性差，只要改变了调色板设置颜色就不一样了。一般是在自己进行探索性数据分析时使用得比较多。 
+- 直接用颜色的英文来设置。R中可以用英文设置的颜色有657个，可以通过colors()函数查看，或者直接运行demo(“colors”)看示例图。
+- rgb()函数前3个参数是三个取值[0,1]的数字，三个数字分别对应”red”,”green”,”blue”。所以在第一幅图中，通过将”red”和”green”,设为最大值1，”blue”设为最小值0，得到的结果就是黄色。rgb()函数中参数alpha是用来设置不透明度的，对于特别密集的散点图很常用。
+- rgb()函数返回的值就是十六进制颜色代码。所以二者可换着使用。
+
+### 当前调色板的查看与设置
+关于颜色，如果你不想自己创建新的调色板，你只需要记住函数colors、rgb、palette、rainbow和RColorBrewer包就可以了。col=1，2，3...分别表示什么颜色？只要输入`palette()`按着序号数就行了。
 ```r
 # 查看所有用英文定义的颜色
 colors()
@@ -9,22 +38,23 @@ palette(rainbow(10))
 # 将palette恢复默认调色板。
 palette("default")
 ```
+## R语言中的调色板
+为什么要用调色板？就统计图来说，基本目的是表现类别变量和数值变量，或者说类别分组和数值大小的识别。前者为了分组需要颜色差异明显，而后者需要颜色随着数值大小渐变。
 
-## 1 、R的5个预设调色板
+### R的5个预设调色板
 不要小看了这5个预设的调色板。它们有两大厉害的功能：1）可以设定不透明度alpha；2）可以轻松生成任意数量n的不同颜色。这5个预设调色板为：
 
 -  rainbow
--  heat.colors
+-  heat.colors 深到浅渐变
 -  terrain.colors
 - topo.colors
--  cm.colors
+-  cm.colors 深到浅再到深渐变
 
 在R环境里面输入:**?rainbow**或其它4个函数名之一就可以获得这5个函数的用法说明。这些函数最少需要一个参数，n，表示要得到颜色的数量。n在系统允许范围内没有限制。下面用彩虹色调色板函数rainbow产生的颜色绘一个色盘：
 ```r
 n <- 12
 pie(rep(1,times=n),col=rainbow(n, alpha = 1), main = "rainbow")
 ```
-
 R语言中除了自带rainbow()调色板还有以下4种:
 ```r
 par(mfrow = c(2, 2))
@@ -43,11 +73,29 @@ x <- rnorm(5000); y<- rnorm(5000)
 par(mfcol=c(1,1)); par(mar=c(1,3,1,1));#par(xaxs="i", yaxs="i")
 plot(x, y, pch=20, cex=2, col=mycolor[1], xlab="", ylab='', axes=F);box()
 ```
+### 创建新调色板的函数colorRamp()和colorRampPalette()
 
-## 2、RColorBrewer包
-主要用brewer.pal()函数，包的两个优点使得其非常实用。
+colorRamp()和colorRampPalette()都可用于创建颜色板。通过传入希望的主要颜色如蓝、紫，colorRamp()和colorRampPalette都返回一个函数。
+二者返回的函数区别为：
+- colorRamp()返回的函数像grey()一样，入参为[0,1]之间的数列，数列中数字个数即为函数返回的颜色板色彩数。
+- colorRampPalette()返回的参数则像rainbow()一样，入参为希望返回颜色板色彩的数量。
+- colorRampPalette()返回渐变颜色板函数，而colorRamp()返回对比颜色板函数。虽然都是用同样的颜色，结果不同。
+```r
+par(mfrow = c(1, 2))
+b2p1 <- colorRampPalette(c("green", "blue"))
+b2p2 <- colorRamp(c("blue", "purple"))
+pie(rep(1, 12), labels = "", col = b2p1(12), border = b2p1(12), 
+main = "colorRampPalette")
+pie(rep(1, 12), labels = "", col = b2p2(seq(0, 1, len = 12)), 
+border = b2p2(seq(0, 1, len = 12)), main = "colorRamp")
+# colorRamp()返回的函数有时绘图不能显示
+```
+
+### RColorBrewer包
+RColorBrewer包的两个优点使得其非常实用。
  一是，包中颜色板被划分为序列型(sequential)、离散型(diverging)、分类型（qualitative)这三种基本能满足统计作图需要的类型；
  二是，颜色都比较协调。更多指引见其官网ColorBrewer。
+ 该包主要用`brewer.pal()`函数从某个调色板中选出几个颜色。
 ```r
 require("RColorBrewer")
 ```
@@ -78,6 +126,7 @@ plot(iris$Petal.Length, iris$Petal.With,
      col = brewer.pal(3, "Set2")[iris$Species],
      main = "iris")
 ```
-
-
+参考文献：
+http://mp.weixin.qq.com/s?__biz=MzA4ODQ1MzQ0Mg==&mid=2648661261&idx=1&sn=f334886fe06c3af4be49a8368907a66a
+常用对照表 http://tool.oschina.net/commons?type=3
 > Written with [StackEdit](https://stackedit.io/).
