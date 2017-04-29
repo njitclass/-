@@ -109,13 +109,12 @@ Since one document can be synchronized with multiple locations, you can list and
 ----------
 
 
-Publication
+网上发布
 -------------
 
 Once you are happy with your document, you can publish it on different websites directly from StackEdit. As for now, StackEdit can publish on **Blogger**, **Dropbox**, **Gist**, **GitHub**, **Google Drive**, **Tumblr**, **WordPress** and on any SSH server.
 
-#### <i class="icon-upload"></i> Publish a document
-
+#### <i class="icon-upload"></i> 发布文档
 You can publish your document by opening the <i class="icon-upload"></i> **Publish** sub-menu and by choosing a website. In the dialog box, you can choose the publication format:
 
 - Markdown, to publish the Markdown text on a website that can interpret it (**GitHub** for instance),
@@ -124,13 +123,13 @@ You can publish your document by opening the <i class="icon-upload"></i> **Publi
 
 > **Note:** The default template is a simple webpage wrapping your document in HTML format. You can customize it in the **Advanced** tab of the <i class="icon-cog"></i> **Settings** dialog.
 
-#### <i class="icon-upload"></i> Update a publication
+#### <i class="icon-upload"></i> 更新已发布的文档
 
 After publishing, StackEdit will keep your document linked to that publication which makes it easy for you to update it. Once you have modified your document and you want to update your publication, click on the <i class="icon-upload"></i> button in the navigation bar.
 
 > **Note:** The <i class="icon-upload"></i> button is disabled when your document has not been published yet.
 
-#### <i class="icon-upload"></i> Manage document publication
+#### <i class="icon-upload"></i> 管理文档发布
 
 Since one document can be published on multiple locations, you can list and manage publish locations by clicking <i class="icon-upload"></i> **Manage publication** in the <i class="icon-provider-stackedit"></i> menu panel. This will let you remove publication locations that are associated to your document.
 
@@ -207,8 +206,6 @@ var bar = 0;
 
 创建脚注如:[^footnote].只要方括号内^后字符串相同，两者的对应关系就建立了对应关系，而编号会根据其在正文中的位置自动更新编号的数字。如stackedit[^stackedit]
 
-  [^footnote]: 这里是脚注的 *文本内容* .
-
 
 ### SmartyPants
 
@@ -270,7 +267,7 @@ cond(yes)->e
 cond(no)->op
 ```
 
-> **Note:** You can find more information:
+> **Note:** You can find more information:[^dd]
 
 > - about **Sequence diagrams** syntax [here][7],
 > - about **Flow charts** syntax [here][8].
@@ -279,7 +276,11 @@ cond(no)->op
 
 [![](https://cdn.monetizejs.com/resources/button-32.png)](https://monetizejs.com/authorize?client_id=ESTHdCYOi18iLhhO&summary=true)
 
-  [^stackedit]: [StackEdit](https://stackedit.io/) is a full-featured, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.
+ [^footnote]: 这里是脚注的 *文本内容* .
+
+  [^dd]: kddddddddddd
+  
+
 
 
   [1]: http://math.stackexchange.com/
