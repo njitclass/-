@@ -73,7 +73,7 @@ You can save the current document to a file by clicking <i class="icon-hdd"></i>
 ----------
 
 
-Synchronization
+同步Synchronization
 -------------------
 
 StackEdit can be combined with <i class="icon-provider-gdrive"></i> **Google Drive** and <i class="icon-provider-dropbox"></i> **Dropbox** to have your documents saved in the *Cloud*. The synchronization mechanism takes care of uploading your modifications or downloading the latest version of your documents.
@@ -141,12 +141,9 @@ Since one document can be published on multiple locations, you can list and mana
 Markdown 语法扩展
 --------------------
 
-StackEdit supports **Markdown Extra**, which extends **Markdown** syntax with some nice features.
+StackEdit 支持**Markdown Extra**扩展语法, 该语言在**Markdown** 语言的基础上增加了一些非常棒的特征.
 
-> **Tip:** You can disable any **Markdown Extra** feature in the **Extensions** tab of the <i class="icon-cog"></i> **Settings** dialog.
-
-> **Note:** You can find more information about **Markdown** syntax [here][2] and **Markdown Extra** extension [here][3].
-
+> **Tip:**你可在 <i class="icon-cog"></i>  **设置** 对话框的**扩展**标签中禁用任何Markdown Extra功能。
 
 ### 创建表格
 
@@ -209,44 +206,48 @@ var bar = 0;
 
 ### SmartyPants
 
-SmartyPants converts ASCII punctuation characters into "smart" typographic punctuation HTML entities. For example:
+SmartyPants将ASCII标点符号转化为"智能" 印刷标点符号HTML 实体. 例如:
 
-|                  | ASCII                        | HTML              |
- ----------------- | ---------------------------- | ------------------
-| Single backticks | `'Isn't this fun?'`            | 'Isn't this fun?' |
-| Quotes           | `"Isn't this fun?"`            | "Isn't this fun?" |
-| Dashes           | `-- is en-dash, --- is em-dash` | -- is en-dash, --- is em-dash |
+|         | ASCII         | HTML              |
+ -------- | --------------| ------------------
+| 单引号  | `'Isn't this fun?'`| 'Isn't this fun?' |
+| 双引号  | `"Isn't this fun?"`| "Isn't this fun?" |
+| 破折号  | `-- is en-dash, --- is em-dash` | -- is en-dash, --- is em-dash |
 
 
 ### 目录
 
-You can insert a table of contents using the marker `[TOC]`:
+您可以使用标记`[TOC]`插入目录 :
 
 [TOC]
 
 
 ### MathJax数学公式编辑
 
-You can render *LaTeX* mathematical expressions using **MathJax**, as on [math.stackexchange.com][1]:
+你可以使用**MathJax**来渲染 *LaTeX* 数学表达式 , 就如同在 [math.stackexchange.com][1]:
 
-The *Gamma function* satisfying $\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N$ is via the Euler integral
-
+*Gamma函数*  满足$\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N$ 其欧拉积分表达式为：
 $$
 \Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
 $$
+$\sim$,$\hat{x},\bar{x},\tilde{x},\frac{1}{\pi},\chi^2$
+是加入空格。
+代码|效果|代码|效果|代码|效果
+---|---|---|---|---|---
+`\quad`|空格|`\vert`|$\vert$|`\sim`|$\sim$
+`\frac{1}{2}`|$\frac{1}{2}$|`\int_a^b xdx`|$\int_a^b xdx$|`\sum_{i=1}^{n}x^2`|$\sum_{i=1}^{n}x^2$
 
-> **Tip:** To make sure mathematical expressions are rendered properly on your website, include **MathJax** into your template:
-
+> **Tip:** 为了确保数学表达式在您的网站上正确呈现，在你的模板中加入以下代码，以包括 **MathJax**:
 ```
 <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 ```
 
-> **Note:** You can find more information about **LaTeX** mathematical expressions [here][4].
+> **Note:**您可以点这里[4]找到关于**LaTeX **数学表达式的更多信息.
 
 
 ### UML图
 
-You can also render sequence diagrams like this:
+你也可以这样渲染序列图sequence diagrams:
 
 ```sequence
 Alice->Bob: Hello Bob, how are you?
@@ -254,7 +255,7 @@ Note right of Bob: Bob thinks
 Bob-->Alice: I am good thanks!
 ```
 
-And flow charts like this:
+这样建立流程图flow chart:
 
 ```flow
 st=>start: Start
@@ -267,7 +268,7 @@ cond(yes)->e
 cond(no)->op
 ```
 
-> **Note:** You can find more information:[^dd]
+> **Note:** 你可以找到更多的信息:[^dd]
 
 > - about **Sequence diagrams** syntax [here][7],
 > - about **Flow charts** syntax [here][8].
