@@ -49,7 +49,7 @@ $\log it(p) =\beta _0  + {\beta _1}{x_1} +  \cdots  + {\beta _p}{x_p}$
 - $\beta _j,j\ne0$为logistic回归系数，表示当其他自变量取值保持不变时，自变量$x_j$取值增加一个单位引起**比数自然对数值**的变化量
 - $Exp(\beta _j)$表示自变量$x_j$取值增加一个单位引起事件(Y=1)概率比值相比与原来的比值的倍数
 
-## 
+## 参数估计的理论基础
 令$(z_{j1},\cdots,z_{jp})$是$p$个预测变量的第$j$次观测，即第$j$条观测记录。
 令$z_j=[1,z_{j1},\cdots,z_{jp}]^T$
 假定观测值$Y_j$服从二项分布$P(Y_j=y_j)=p(z_j)^{y_j}[1-p(z_j)]^{1-y_j},y_j=0,1$
@@ -66,6 +66,8 @@ $ln(\frac{p(z_j)}{1-p(z_j)})=\beta_0+\beta_1z_{j1}+\cdots+\beta_pz_{jp}=\beta^Tz
 当样本量足够大时，参数估计值$\hat\beta$渐进正态分布，渐近均值为$\beta$，渐近协方差矩阵为：$\hat{cov}  (\hat\beta)\approx[\sum_{j=1}^{n}\hat p(z_j)(1-\hat p(z_j))z_jz_j^T]^{-1}$
 该协方差矩阵的对角元素的平方根分别为参数的标准差的估计值，即标准误差$SE(\hat\beta)$
 $\beta_j$大样本的95%置信区间为$\hat\beta_j\pm 1.96SE(\hat\beta_j)$
+
+## 参数的z检验
 根据中心极限定理，当样本量足够大，参数估计值$\hat\beta$渐进正态分布。
 $\frac{\hat\beta_j-\beta_j}{SE(\hat\beta_j)}\sim N(0,1)$
 假设检验参数是否显著，原假设是$\beta_j=0$，
@@ -109,7 +111,20 @@ $\frac{\hat\beta_j-\beta_j}{SE(\hat\beta_j)}\sim N(0,1)$
 3. Score test
 考虑在已有模型基础上引入新变量之后模型效果是否发生改变
 
-## 定性变量的处理--哑变量
+## 参数检验
+
+在求出极大似然法估计$\hat\beta_i$的同时可以得到Fisher信息阵I：
+$$I=\{\frac{\partial^2lnL}{\partial \beta_i\partial\beta_j}\vert \hat\beta_0, \hat\beta_1,\cdots,\hat\beta_p\}$$
+它的逆阵$I^{-1}$是$\hat\beta_i$的协方差矩阵。$I^{-1}$的对角阵元素$(I^{-1})_{ii}$是$\hat\beta_i$的方差
+$$var(\hat\beta_i)=(I^{-1})_{ii}\\ SE(\hat\beta_i)=\sqrt{(I^{-1})_{ii}}$$。
+因此$\beta_i$的检验
+检验统计量$$Z=\frac{\hat\beta_i}{SE(\hat\beta_i)}\sim N(0,1)$$
+置信度为$1-\alpha$的置信区间$\hat\beta_i\pm Z_\alpha SE(\hat\beta_i)$
+
+
+
+
+## 定性变量的处理--哑变量1
 
 回归系数$\beta_j$表示其它自变量不变，$x_j$每改变一个单位时，所预测的比数对数值的平均或预期变化量。
 
@@ -119,12 +134,12 @@ $\frac{\hat\beta_j-\beta_j}{SE(\hat\beta_j)}\sim N(0,1)$
  - 有序多分类：家庭收入分为高、中、低三档，它们之间的差距无法准确衡量
  - 强行规定为等距显然可能引入更大的误差
  
-## 哑变量
+## 定性变量的处理--哑变量2
 在以上这些情况时，我们就必须将原始的多分类变量转化为数个哑变量（Dummy Variable, 也称虚拟变量），每个哑变量只代表某两个级别或若干个级别间的差异，这样得到的回归结果才能有明确而合理的实际意义。
 **注意：哑变量必须同进同出，否则含义可能改变** 
 
 
-## 哑变量
+## 定性变量的处理--哑变量3
 例如，我们想了解不同年级的大学生是否有购买华为手机的意愿。在自变量中有一个分类变量为年级。		
 大一是作为对比水平（基础水平、基准水平），而哑变量V1、V2、V3分别代表了大二、大三、大四和大一相比的系数 
 哑变量|大一|大二|大三|大四
@@ -147,7 +162,7 @@ $BIC=-2lnL+ln(n)df$
 
 - $AIC$可能精度更高， $BIC$模型更简单。
 ```r
-glm对象=glm(公式,family=binomial(link=logit),data=数据框)
+glm对象=glm(公式,family=binomial(link=logit), data=数据框)
 step(glm对象, trace=0)#AIC
 step(glm对象, k=log(n), trace=0)#BIC
 ```
@@ -181,10 +196,10 @@ Logistic Regression
 type: section
 
 
-逻辑回归：简介
+logist回归案例：游乐园季度门票的销售
 =====
-
-游乐园季度门票的销售案例。数据包括季票销售记录和可能的解释变量：通过什么渠道知道有销售季票（电子邮件、直接邮寄或亲临公园）、是否和其他促销手段捆绑（提供免费停车）。问题：与其他促销手段（免费停车）捆绑是否有助于消费者购买季票？
+数据包括季票销售记录和可能的解释变量：通过什么渠道知道有销售季票（电子邮件、直接邮寄或亲临公园）、是否和其他促销手段捆绑（提供免费停车）。
+问题：捆绑促销（送免费停车）是否能刺激消费者购买季票？
 ```{r}
 pass.df <- read.csv("http://goo.gl/J8MH6A")
 pass.df$Promo <- factor(pass.df$Promo, levels=c("NoBundle", "Bundle"))
@@ -193,7 +208,7 @@ summary(pass.df)
 Note: we set the `bundle` factor levels explicitly (why?)
 
 
-Logistic regression with glm(): model 1
+Logistic回归 glm(): model 1
 =====
 是否捆绑促销 `Promotion` 有助于季票销售 `Pass` purchase?
 ```{r}
@@ -216,7 +231,7 @@ pass.m2 <- glm(Pass ~ Promo + Channel, data=pass.df, family=binomial)
 summary(pass.m2)
 ```
 
-Remember: Visualize first!
+用数据可视化进行探索!
 =====
 当将销售按不同渠道分别观察时，发现在两个渠道中捆绑销售相对于不捆绑反而购买季票的比例更少！ `bundle` has lower proportional sales of `pass` after it is broken
 out by `channel`. 这就是 _Simpson's paradox_.
@@ -226,7 +241,7 @@ doubledecker(table(pass.df))
 ```
 辛普森悖论也叫Yule–Simpson 效应，是在概率论或统计学中的一个悖论。它指数据在不同分组呈现一种结论，但当这些分组结合时却表现出与分组不同甚至相反的结论的一种悖论。https://en.wikipedia.org/wiki/Simpson%27s_paradox.
 
-New Model with Channel and interaction
+考虑渠道和交互项的模型
 =====
 更复杂的模型表明捆绑销售只在电子邮件这一渠道中有效。 
 我们没有必要在其他渠道投放捆绑销售（免费停车）(park, direct mail). 
@@ -328,5 +343,55 @@ sex，性别。
 这种假设看似复杂，但大量实践证明，它是符合多数实际情况的。
 案例：工作满意度影响因素分析
 
+# 学习资源
+Logistic Regression and Generalised Linear Models: Blood Screening,
+Women’s Role in Society, and Colonic Polyps
+https://onlinecourses.science.psu.edu/stat504/node/164
 
+高级回归（推荐）
+http://web.as.uky.edu/statistics/users/pbreheny/760/S13/notes/3-26.pdf
+http://web.as.uky.edu/statistics/users/pbreheny/760/S13/notes.html
+http://web.as.uky.edu/statistics/users/pbreheny/teaching.html
+
+https://cran.r-project.org/web/packages/HSAUR/vignettes/Ch_logistic_regression_glm.pdf
+ anova(plasma_glm_1, plasma_glm_2, test = "Chisq")
+#离差值的卡方检验，即似然比检验
+
+residuals(glm对象, type = "deviance")#取出离差残差
+http://r.789695.n4.nabble.com/Deviance-Residuals-td2332307.html
+Residuals on the scale of the response, y - E(y); in a binary logistic regression, y is 0 or 1 and E(y) is the fitted probability of a 1. As it turns out, response residuals aren't terribly useful for a logit model. 
+
+> residuals(glm1, "pearson") 
+
+Components of the Pearson goodness-of-fit statistic. 
+
+> residuals(glm1, "deviance") 
+
+Components of the residual deviance for the model. 
+
+> residuals(glm1, "working") - especially this one confuses me a lot! 
+
+Residuals from the final weighted-least-squares regression of the IWLS procedure used to fit the model; useful, for example, for detecting nonlinearity. 
+
+
+
+For logistic regression,
+$lnL=\sum_i {{y_i
+log\hat \pi_i + (1 − y_i) log(1 −\hat \pi_i)}}$
+
+By analogy with linear regression, the terms should correspond
+
+离差残差（deviance residual）:
+$d_i = s_i \sqrt{−2 [{y_i log\hat{\pi}_i + (1 − y_i) log(1 −\hat{\pi}_i)}]},$
+其中， $s_i $= 1若$y_i = 1$ 和$s_i $= −1若$y_i =0$
+
+离差残差的平方和即离差:
+$D =\sum_i{d_i^2}=-2lnL$
 > Written with [StackEdit](https://stackedit.io/).
+
+## 极大似然法
+就是在假定整体模型**分布已知**，利用已知的样本结果信息，反推最具有可能（最大概率）导致这些样本结果出现的模型参数值。极大似然估计提供了一种给定观察数据来评估模型参数的方法，即：“模型已定（分布已知），参数未知”。
+- 极大似然估计中采样需满足一个重要的假设，就是所有的采样都是**独立同分布**的。
+- 极大似然估计回归可以处理非正态分布。
+- 最小二乘法回归估计是在模型形式已知条件下，使得样本中各点的因变量观测值与拟合值之差（残差）的平方和最小的参数估计。
+- 极大似然估计需要分布假定和模型形式假定；最小二乘法不需要分布假定，只要模型形式假定。
