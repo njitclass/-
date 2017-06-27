@@ -568,7 +568,48 @@ $p = 2 \Phi (−0.921) =  0.36$
 该方法基于对$\hat\beta$ 的近似估计; 它不一定提供关于$\beta$离$\hat\beta$距离的准确信息
 下一次，我们将讨论一种基于似然比测试和构建置信区间的替代方法，并看到它从近似问题中受到的影响较小.
 
+```r
+## Data
+donner <- read.delim("http://web.as.uky.edu/statistics/users/pbreheny/760/data/donner.txt")
 
+## Three approaches:
+##  A) A 'by hand' approach, doing the math yourself
+##  B) A more automatic approach, but that involves refitting the model
+##  C) Using a function 'estimate' that I put online
+
+## Slides 16-17: Approach A
+fit <- glm(Status~Age*Sex, donner, family=binomial)
+b <- coef(fit)
+lam.m <- -c(0,10,0,10)
+lam.f <- -c(0,10,0,0)
+exp(crossprod(lam.m, b))
+exp(crossprod(lam.f, b))
+
+SE.m <- sqrt(crossprod(lam.m, vcov(fit))%*%lam.m)
+SE.f <- sqrt(crossprod(lam.f, vcov(fit))%*%lam.f)
+exp(crossprod(lam.m, b) + qnorm(c(.025,.975))*SE.m)
+exp(crossprod(lam.f, b) + qnorm(c(.025,.975))*SE.f)
+
+## Slide 16-17: Approach B
+Died <- 1*(donner$Status=="Died")
+Female <- 1*(donner$Sex=="Female")
+fit1 <- glm(Died~Age*Sex,donner,family=binomial)
+fit2 <- glm(Died~Age*Female,donner,family=binomial)
+summary(fit1)
+summary(fit2)
+exp(10*coef(fit1)["Age"]) ## Female
+exp(10*coef(fit2)["Age"]) ## Male
+SE1 <- 10*summary(fit1)$coef[2,2]
+SE2 <- 10*summary(fit2)$coef[2,2]
+exp(10*coef(fit1)["Age"] + qnorm(c(.025,.975))*SE1) ## Female
+exp(10*coef(fit2)["Age"] + qnorm(c(.025,.975))*SE2) ## Male
+
+## Slide 16-17: Approach C
+source("http://web.as.uky.edu/statistics/users/pbreheny/760/S13/notes/estimate.R")
+estimate(lam.m, fit, ci=TRUE, trans=exp)
+estimate(lam.f, fit, ci=TRUE, trans=exp)
+
+```
 
 
 
