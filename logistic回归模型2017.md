@@ -16,10 +16,21 @@ $\hat P =\beta _0  + {\beta _1}{x_1} +  \cdots  + {\beta _p}{x_p}$
 - 发生率P为因变量，它与自变量之间通常不存在线性关系
 - 不能保证在自变量的各种组合下，因变量的取值仍在0~1范围之内
 
+##因变量的分布
+
+ - 因为因变量是二分类变量，所以不可能为正态分布
+ - 因变量服从二项分布或更准确的说Bernoulli分布（n=1的二项分布） 
+ - $Y_i \sim Binomial(n=1, \pi_i)$其中$\pi_i$为$Y_i=1$的概率
+ -  与线性回归不同，模型中随机变量并不是确定量与随机项相加的形式。  
+ - 需要寻找二分类的因变量的分布$\pi_i$与确定的系统项$\eta_i=x_i^T\beta$之间的关系形式
+ - $\pi_i=\frac{1}{1+e^{-\eta_i}}=\frac{e^{\eta_i}}{1+e^{\eta_i}}$或$ln(\frac{\pi_i}{1-\pi_i})=\eta_i$
+
+
 ## 模型简介
 $\log it(p) = \ln \frac{p}{{1 - p}}$
 $\log it(p) = \beta _0  + {\beta _1}{x_1} +  \cdots  + {\beta _p}{x_p}$
-
+注：我认为$\log it(p) = \beta _0  + {\beta _1}{x_1} +  \cdots  + {\beta _p}{x_p}+\epsilon$
+是错误的，因为这里的随机干扰项不是可加的。$p$是二分类的因变量的值为1的概率。
 - Odds（比数、机会比、发生比）反映事物发生的可能性的另一种方式。
 - 在比较事物发生的可能性大小时，与用发生概率描述可能性等价
 - 由于因变量为二分类，所以误差项服从二项分布，而不是正态分布
@@ -348,13 +359,14 @@ Logistic Regression and Generalised Linear Models: Blood Screening,
 Women’s Role in Society, and Colonic Polyps
 https://onlinecourses.science.psu.edu/stat504/node/164
 
-高级回归（推荐）
+高级回归（推荐！）Patrick Breheny在肯塔基大学的高级回归的课件
 http://web.as.uky.edu/statistics/users/pbreheny/760/S13/notes/3-26.pdf
 http://web.as.uky.edu/statistics/users/pbreheny/760/S13/notes.html
 http://web.as.uky.edu/statistics/users/pbreheny/teaching.html
 
 https://cran.r-project.org/web/packages/HSAUR/vignettes/Ch_logistic_regression_glm.pdf
  anova(plasma_glm_1, plasma_glm_2, test = "Chisq")
+ 
 #离差值的卡方检验，即似然比检验
 
 residuals(glm对象, type = "deviance")#取出离差残差
@@ -375,11 +387,11 @@ Residuals from the final weighted-least-squares regression of the IWLS procedure
 
 
 
-For logistic regression,
+对于 logistic回归,
 $lnL=\sum_i {{y_i
 log\hat \pi_i + (1 − y_i) log(1 −\hat \pi_i)}}$
 
-By analogy with linear regression, the terms should correspond
+通过类比线性回归, 离差残差可以如下定义：
 
 离差残差（deviance residual）:
 $d_i = s_i \sqrt{−2 [{y_i log\hat{\pi}_i + (1 − y_i) log(1 −\hat{\pi}_i)}]},$
@@ -394,4 +406,170 @@ $D =\sum_i{d_i^2}=-2lnL$
 - 极大似然估计中采样需满足一个重要的假设，就是所有的采样都是**独立同分布**的。
 - 极大似然估计回归可以处理非正态分布。
 - 最小二乘法回归估计是在模型形式已知条件下，使得样本中各点的因变量观测值与拟合值之差（残差）的平方和最小的参数估计。
-- 极大似然估计需要分布假定和模型形式假定；最小二乘法不需要分布假定，只要模型形式假定。
+[教学视频](https://mp.weixin.qq.com/s?__biz=MzA4NDEyMzc2Mw==&mid=2649677782&idx=2&sn=17dfad34c5e65f2c2f6edb122a635083&chksm=87f676cab081ffdcab66f1f28526ed08d818a665bb42a9309f5a97318614b7ba7b8d47dcd3a0&mpshare=1&scene=1&srcid=062602U5XBL28mAGClDDLhNU#rd)
+
+## Donner party唐纳派对案例
+
+early snowfall
+American pioneers
+Our example data set from today involves the survival of the members of the Donner party
+在1846年春天，一群美国先驱者从加州出发。然而，他们遭受了一系列的挫折，直到10月才到达内华达山脉。穿过山脉时，他们被不期而遇的降雪困住，不得不在那里度过冬天。条件恶劣，食物供应量不足，87名Donner派对中有40人在最终获救之前死亡。
+
+The data set donner.txt contains the following information regarding the adult (over 15 years old) members of the Donner party:
+Age Sex
+Status: either Died or Survived
+
+```r
+fit <- glm(Status~Age*Sex,donner,family=binomial) 
+summary(fit)
+
+repeat { 
+old <- b
+eta <-  X*b
+pi <- exp(eta)/(1+exp(eta))
+W  <-  diag(as.numeric(pi*(1-pi))) 
+z <- eta +  solve(W) *(y-pi)
+#solve为求逆阵
+b <- solve(t(X) * W  * X) * t(X) * W  * z    
+if (converged(b,old)) break
+}
+```
+接下来，将计算过程写出来。
+首先，注意到对于二项分布$\mu_i=\pi_i$,
+$W (\mu_i) = \mu_i(1 −\mu_i)= \pi_i(1 −\pi_i)$
+W是一个对角阵，该对角阵的第i个主元为$\pi_i(1 −\pi_i)$
+采用的算法为IRLS 算法:
+
+```r
+VarB <- solve(t(X)*W*X) 
+SE   <- sqrt(diag(VarB))
+z  <-  b/SE
+p  <- 2*pnorm(-abs(z))
+```
+其中，VarB为系数的方差协方差矩阵；SE为系数的抽样分布的标准误。
+
+|Item |  Estimate| Std. Error |z value |	P |
+|---|---|---|---|---|
+|(Intercept)|	0.3183|	1.1310|	0.2815|	0.7784|
+|Age|	-0.0325|	0.0353|	-0.9209|	0.3571
+|Female|	6.9280|	3.3989|	2.0383|	0.0415
+|Age:Female|-0.1616|	0.0943|	-1.7143|0.0865
+
+Let’s write out the model as:
+
+$ln(\frac{\pi}{1-\pi})= \beta_0 +\beta_1Age +\beta_2Female + \beta_3Age·Female$
+
+20岁男性的生存概率是多少?
+
+$\hat\pi = .418$
+所以，20岁男性的生存概率为 41.8%。
+同理可得,  40岁男性的生存概率为 27.3% ； 6020岁男性的生存概率为16.4% 。
+
+20岁女性的生存概率是多少?
+
+η = β0 + 20β1 + β2 + 20β3
+ηˆ = 3.3649
+πˆ = .967
+
+20岁女性的生存概率是96.7%; 40岁女性的生存概率是37.4% ；60岁女性的生存概率是  1.2%。
+
+总结趋势：年轻成年女性的生存概率高于年轻成年男性，但是随着年龄的增长，其生存概率下降得更快，直到老年女性难以生存的年龄高于老年男性。
+
+As you can see (most clearly for the females), logistic regression produces fitted probabilities that take on an “S” shape (or sigmoidal curve)
+This comes from the logit link function, which as we have demonstrated earlier, constrains the fitted probabilities to lie within [0, 1]
+Once again, we see the utility of the link function: it allows us to obtain a nonlinear fit from a linear model
+ 
+Finally, all of the same questions one asks in linear regression about the systematic part of the model are still relevant to GLMs
+For example, we have assumed a linear effect – is this reasonable?
+Perhaps the probability of survival is low for young adults and the elderly, and at its maximum in middle age
+
+在模型的系统组成部分中包括对年龄的二次效应，我们看到这个想法可能有一些理由。
+
+##概率的估计值
+
+We have already talked about estimation of probabilities based on the fit of a logistic regression model:
+(1)给定一个解释变量x, 计算得到线性预测值$\hat\eta=x^T\beta$
+(2)估计概率$\hat\pi=\frac{e^\eta}{1+e^\eta}$
+由于最大似然估计对于转换是不变的, 当$\hat\eta$是线性估计值时，$\hat\pi$就是$\pi$的极大似然估计值。
+
+## 概率的置信区间
+
+因为有
+$\frac{x^t\hat\beta-x^t\beta}{\hat{SE}} \sim z$
+其中$\hat{SE}=\sqrt{x^T(X^TWX)^{-1}x}$
+构建$\eta$的置信区间
+$(L,U)=(\hat\eta-z_{\alpha/2}\hat{SE},\hat\eta+z_{\alpha/2}\hat{SE})$
+根据不变性，可得$\pi$的置信度为$1-\alpha$的置信区间：
+$(\frac{e^L}{1+e^L},\frac{e^U}{1+e^U})$
+
+
+## logistic回归和病例对照研究
+
+这对病例对照研究（case-control study）具有特别重要的后果。
+定理：在病例对照研究中，当满足假设：
+（a）模型是正确的
+（b）案例和控制的选择与解释变量无关
+最大似然估计$\hat\beta_1,\cdots,\hat\beta_{p-1}$（不包括$\hat\beta_0$）以及它们的近似抽样分布等同于从逻辑回归模型获得的数值。
+
+- 假设选择病例和控制是独立于解释变量实际上是一个相当大的假设，在实际病例对照研究中经常被违反。
+- 这是偏差（bias）的主要来源!
+例如，病例对照研究发现儿童期白血病与暴露于电磁场（EMF）存在联系。
+
+然而，随后的调查表明，这完全是因为病例对照偏差。
+社会经济地位低的家庭更有可能生活在电磁场附近。
+社会经济地位低的家庭也不太可能作为控制组对象参与研究。
+社会经济状况不影响病例参与（病例通常渴望参与）。这导致EMF与白血病之间的虚假关联。
+
+## odds ratio的估计
+因为$ln\frac{\pi}{1-\pi}=x^T\beta$,即$\frac{\pi}{1-\pi}=exp(x^T\beta)$
+比值比odds ratio
+$$OR=\frac{\frac{\pi_2}{1-\pi_2}}{\frac{\pi_1}{1-\pi_1}}=exp((x_2-x_1)^T\beta)$$
+
+特别地，考虑当其余的解释变量保持不变，$x_j$变化量$\delta_j$时比值比的情况：
+$$OR = exp(\delta_j\beta_j)$$.
+这正是我们需要的：所有其他变量消失，我们的估计仅依赖于βj和xj的变化.
+我们可以因此估计这个优势比，以及完全基于$\beta_j$进行推理。特别是我们甚至不需要估计$\beta_0$，所以我们可以应用这些结果进行病例对照研究。
+
+例如，Donner一名成员年龄增长10年在冬季不能生存的概率是甚么？ 
+OR = exp（10·0.0325）= 1.4（男）
+OR = exp（10·0.1941）= 7.0（女）
+注意，这些优势比适用于任何10年差异（50对40,30与20等由于线性假设）
+
+## odds ratio的置信区间
+
+
+
+可以通过首先获得以$\hat\beta$的置信区间，然后变换来获得优势比的置信区间。
+对于线性预测因子，年龄效应的斜率的置信区间为
+（-0.0366, 0.1016）  （男性）
+（ 0.0227, 0.3654）   （女性）
+死亡比例比的置信区间（再次，年龄变化为10岁）为：
+$e^{10·(L,U)} = (0.7, 2.8)$	(男性)
+$e^{10·(L,U )} = (1.3, 38.6)$	(女性)
+
+## 假设检验
+优势比的假设检验（和事实上的概率）直接等效于回归系数的检验，因为以下都是等效的：
+βj = 0
+Odds ratio = 1
+Difference in probabilities = 0
+Ratio of probabilities (relative risk) = 1
+
+例如, 检验H0 : $\beta_{Age|Male} = 0$ 
+$z =\frac{\hat\beta_{Age|Male}}{SE}= \frac{−0.03248}{0.03527} =	0.921$,
+$p = 2 \Phi (−0.921) =  0.36$
+同理, 检验H0 :$ \beta_{Age|Female} = 0$, 可得$p = .03$
+测试相对功效较低，因为只有45个被试; 因此尽管估计的效应值较大，但p值较高。
+这种现象从置信区间也可以看出。
+
+
+## 置信区间: Wald vs. likelihood ratio
+这不是唯一 (甚至不是最优方法)来对 GLM模型进行推理
+这个方法称为 Wald方法,是由统计学家 Abraham Wald提出的。
+该方法基于对$\hat\beta$ 的近似估计; 它不一定提供关于$\beta$离$\hat\beta$距离的准确信息
+下一次，我们将讨论一种基于似然比测试和构建置信区间的替代方法，并看到它从近似问题中受到的影响较小.
+
+
+
+
+
+ 各位亲们，能否推荐使用体验良好的一个数据统计分析的互动教学软件？能自己扩展教学内容，最后能联机考试的那种。我所在学院有点经费可以购买。
