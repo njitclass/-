@@ -1,0 +1,205 @@
+## 相关系数
+变量$x$和变量$y$的样本Pearson相关系数等于两个变量的样本协方差与两个变量的样本标准差之比。
+$$r_{x,y}=\frac{cov(x,y)}{s_x s_y}=\frac{\sum (x-\bar{x})(y-\bar{y})}{\sqrt{\sum (x-\bar{x})^2\sum (y-\bar{y})^2}}$$
+变量$x$和变量$y$的样本协方差$cov(x,y)=\frac{\sum (x-\bar{x})(y-\bar{y})}{n-1}$
+变量$x$的样本方差$s_x^2=\frac{\sum (x-\bar{x})^2}{n-1}$
+变量$y$的样本方差$s_y^2=\frac{\sum (y-\bar{y})^2}{n-1}$
+因为计算协方差（共变关系）要用到两个变量的离均差乘积和，这种相关系数也称为积差相关系数（Pearson's produnct-moment correlation）。
+
+## Pearson相关系数的性质
+- 相关系数可以分为正相关(完全正相关)、负相关(完全负相关)、零相关五种情形。
+- 相关系数介于-1至1之间。
+- 相关系数具有对称性，$r_{xy}=r_{yx}$
+- 相关系数与原点和尺度无关。相关系数没有单位, 可以进行跨样本的比较
+特别注意：
+- 相关并不等于因果，如冰激凌与鲨鱼数
+- 总体相关系数是希腊字母$\rho_{X,Y}$,而样本相关系数是英文字母$r_{x,y}$
+- 两个变量的总体相关系数$\rho_{X,Y}$的大小需经显著性检定来证明是否显著(是否有统计上的意义)。
+https://en.wikipedia.org/wiki/Correlation_and_dependence
+
+##  Pearson相关系数的统计推断
+1. 样本的 Pearson相关系数作为样本统计量并不是总体相关系数的无偏估计。需要进行修正：
+$r^*=\sqrt{1-\frac{(1-r^2)(N-1)}{N-2}}$
+
+2.  单个相关系数的显著性检验
+单个相关系数的显著性检验之$t$检验:总体相关系数是否为零
+$t=\frac{r-\rho_0}{s_r}=\frac{r}{\sqrt{\frac{1-r^2}{N-2}}}$
+分子为样本相关系数与假定的总体相关系数的差异，分母为抽样的标准误。该$t$检验的自由度为$N-2$，因为两个变量各取一个自由度进行了样本方差的估计。
+
+## R语言相关系数的相关操作1
+绘制四种不同的Pearson相关系数的散点图
+```r
+par(mfrow=c(2,2),mar=c(3,3,1,1),cex=0.8)
+x=runif(20)；e=rnorm(20)
+plot(x,y=x,type='b');text(0.2,0.8,paste('r =',round(cor(x,x),4)))
+plot(x,y=-x,type='b');text(0.8,-0.2,paste('r =',round(cor(x,-x),4)))
+y1=3+10*x+e;
+plot(x,y1);abline(3,10);text(0.2,10,paste('r =',round(cor(x,y1),4)))
+y2=3-10*x+e;
+plot(x,y2);abline(3,-10);text(0.8,0,paste('r =',round(cor(x,y2),4)))
+par(mfrow=c(1,1))
+```
+## R语言相关系数的相关操作2
+绘制学生身高体重的散点图
+```r
+X=df$height; Y=df$weight
+# 在改变图形设置之前将原设置保存到op变量中
+op<-par(mfrow=c(1,2),cex=0.8)
+plot(X,Y); plot(Y,X)
+par(op) # 恢复原图形设置
+```
+注意：恢复原图形设置的技巧: op<-par(...)和par(op)
+
+##  R语言相关系数的相关操作3
+自定义两变量的离均差乘积和函数
+```r
+lxy<-function(x,y){ 
+  n=length(x); 
+  L=sum(x*y)-sum(x)*sum(y)/n   
+  L
+} 
+#计算出相关系数
+r=lxy(X,Y)/sqrt(lxy(X,X)*lxy(Y,Y));r
+```
+
+## R语言相关系数的相关操作4
+自己编程计算单个相关系数的显著性检验
+```r
+# 变量x和y的样本Pearson相关系数
+r=cor(X,Y)
+n=length(X)
+# 计算相关系数的检验统计量tr
+tr=r/sqrt((1-r^2)/(n-2));tr  
+# 比较R语言中的相关系数显著性检验cor.test的结果
+cor.test(X,Y)
+```
+## 分组数据的相关系数与其差异性检验
+```r
+library(lattice)    #载入lattice包
+xyplot(weight~height|sex,data=df)
+# 公式形式：~变量1+变量2
+cor.test(~weight+height,data=df[df$sex=='男',])
+cor.test(~weight+height,data=df[df$sex=='女',])
+```
+## 补充  相关系数的类型
+
+- R语言中有Pearson相关系数、spearman相关系数，kendall相关系数、偏相关系数、多分格相关系数和多系列相关系数。
+- spearman等级相关系数衡量分级定序变量之间的相关程度。
+- kendall相关系数也是一种非参数的等级相关度量。
+```r
+cor(x,use=缺失数据处理方式, method=类型)`
+缺失数据处理方式：all.obs|everything|complete.obs|pairwise.complete.obs
+类型Pearson|spearman|kendall
+默认：use="everything", method="Pearson"
+```
+
+## 协方差和相关矩阵
+- 计算协方差和相关矩阵(Covariances and correlations)的函数为`cov()和cor()`
+```r
+states<- state.x77[,1:6]
+# 协方差矩阵
+cov(states)
+# 相关矩阵
+cor(states)
+# spearman相关矩阵
+cor(states, method="spearman")
+# 一些变量与另一些变量的相关矩阵
+x <- states[,c("Population", "Income", "Illiteracy", "HS Grad")]
+y <- states[,c("Life Exp", "Murder")]
+cor(x,y)
+```
+
+## 偏相关系数partial correlations
+偏相关系数:在剔除了一组控制随机变量的影响的条件下，两个随机变量之间的关联程度的测量值。
+更多请看：https://en.wikipedia.org/wiki/Partial_correlation
+在线课程：https://www.datacamp.com/courses/correlation-and-regression
+```r
+library(ggm)
+# 在控制了income, illiteracy rate以及 HS graduation rate
+# 条件下人口与谋杀率的偏相关系数 
+# 前两个数为要求相关关系的变量的整数索引，其余为要控制和排除影响的变量
+# 第二个输入参数为协方差矩阵
+pcor1=pcor(c(1,5,2,3,6), cov(states));pcor1
+```
+
+##  相关系数的显著性检验
+原假设是相关系数为零。
+```r
+# 两个变量的相关系数的显著性检验
+cor.test(states[,3], states[,5])
+# psych包的偏相关的显著性检验
+# 输入参数分别为：偏相关系数，控制变量个数，样本量
+pcor.test(pcor1, q=3, n=dim(states)[1])
+```
+
+## 相关矩阵和显著性检验 
+psych包中的`corr.test()`可以求相关矩阵中各相关系数的p值，还可以求各相关系数的置信区间。
+```r
+library(psych)
+corr.test(states, use="complete")
+# 详细参看上三角阵中两两变量的相关系数的显著性和置信区间
+print(corr.test(states, use="complete"), short = F)
+```
+psych包的r.test提供了多种显著性检验, 如两个独立相关系数的差异是否显著等.
+
+## 相关矩阵的可视化
+corrplot包的corrplot()和corrplot.mixed()两个函数可以
+```r
+library(corrplot)
+# 用颜色和圆面积的相对大小表示相关系数
+corrplot(cor(states))
+# 上三角为图形表示，下三角用数字表示，对角线上为变量名
+# order="hclust"用聚类方法将变量根据相关系数重新排列
+corrplot.mixed(cor(states), order = "hclust")
+corrplot(cor(x,y)) # 
+corrplot.mixed(cor(x,y)) #不能画不对称的相关系数矩阵
+```
+
+##一元线性回归
+$b=\frac{\sum (x-\bar{x})(y-\bar{y})}{\sum (x-\bar{x})^2}=r_{x,y}\frac{s_y}{s_x}$
+$a=\bar y-b\bar x$
+```r
+b=lxy(X,Y)/lxy(X,X); b
+a=mean(Y)-b*mean(X); a
+```
+
+## 一元线性回归的R语言操作
+
+使用lm(因变量~自变量)计算线性回归。有两种主要形式：
+
+- lm(因变量~自变量)
+- lm(因变量~自变量, data=数据框)
+```r
+X=df$height; Y=df$weight
+fm=lm(Y~X);fm    # 拟合线性回归模型fm
+plot(Y~X); abline(fm)
+# lm()函数的数据框和公式形式
+plot(weight~height,data=df)
+fm=lm(weight~height,data=df);fm    # 拟合线性回归模型
+abline(fm)
+coef(fm)   #fm$coef
+resid(fm)  #残差
+fitted(fm) # 原自变量数据对应的因变量预测值
+plot(weight~height,data=df);abline(fm)
+```
+## 利用lm模型进行预测
+使用`predict(lm对象,自变量数据框)`预测不同自变量值对应的因变量值
+```r
+summary(fm)
+predict(fm,data.frame(height=160)) 
+predict(fm,data.frame(height=200)) 
+predict(fm,data.frame(height=c(150,160,170,180,190,200))) 
+```
+## 查看lm模型内的信息
+利用names()函数看lm模型对象概要中有哪些名字。
+```r
+sfm=summary(fm);sfm
+names(sfm)
+sfm$r.sq     #R方
+sfm$adj.r.sq #调整的R方
+sfm$fstat    #F检验统计量的值
+sfm$coef     #系数
+# 查看t值和p值
+t=sfm$coef[2,3];t
+P=sfm$coef[2,4];P
+```
